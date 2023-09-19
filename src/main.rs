@@ -10,6 +10,10 @@ use serde_json::Value;
 use std::sync::mpsc;
 
 mod io_bin;
+mod inst;
+mod container;
+
+use inst::InstFront as Inst;
 
 pub type Try<T> = Option<T>; // Don't care about the contents of errors
 
@@ -145,18 +149,7 @@ fn create_container(id: usize, diffs: &[String], config: &str) -> Result<(), Cre
     }
 }
 
-fn oci_config_from_config(config: &Config) -> String {
-    let /*mut*/ oci_config: HashMap<String, Value> = serde_json::from_str(BASE_OCI_CONFIG).unwrap(); // stupid rust won't let me do this at compile time >:|
-    
-    // change hostname?
-    // force root path?
-    // make changes based on config?
-    //   - namespaces
-    //   - mounts
-    //   - resources?
-    
-    serde_json::to_string(&oci_config).unwrap()
-}
+
 
 /*enum InstState {
     Init {
